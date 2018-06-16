@@ -24,35 +24,18 @@ namespace ThreeWpf
     public partial class MainWindow : Window
     {
 
-        private ObservableCollection<IProducer> _producerList = new ObservableCollection<IProducer>();
-        private ObservableCollection<IProduct> _productList = new ObservableCollection<IProduct>();
-
-
-        public ObservableCollection<IProducer> ProducerList
-        {
-            get { return _producerList; }
-            set { _producerList = value; }
-        }
-        public ObservableCollection<IProduct> ProductList
-        {
-            get { return _productList; }
-            set { _productList = value; }
-        }
    
         private LogicController _logicController;
 
+        public LogicController LogicController
+        {
+            get { return _logicController; }
+            set { _logicController = value;  }
+        }
+
         public MainWindow()
         {
-            _logicController = new LogicController("Dao2.dll");
-            foreach (var producer in _logicController.GetAllProducers().ToList())
-            {
-                ProducerList.Add(producer);
-            }
-            foreach (var product in _logicController.GetAllProducts().ToList())
-            {
-                ProductList.Add(product);
-            }
-            InitializeComponent();
+            _logicController = new LogicController(Properties.Settings.Default.database_name);
         }
     }
 }

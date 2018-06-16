@@ -4,42 +4,183 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ThreeWpf"
+        xmlns:bl="clr-namespace:Durczak.AplikacjaWielowarstowa.BL;assembly=BL"
         mc:Ignorable="d"
         Name="Window1"
         Title="MainWindow" Height="600" Width="800">
+
+
+
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}" >
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ListBox DockPanel.Dock="Bottom" Name="lstErrors" ItemsSource="{Binding ElementName=ErrTextBox, Path=AdornedElement.(Validation.Errors)}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ErrorContent}" Foreground="Red"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Border BorderBrush="Red">
+                                <AdornedElementPlaceholder Name="ErrTextBox" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Control.MinWidth" Value="100" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Control.Margin" Value="20 2 2 70" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+        <!-- <ObjectDataProvider ObjectType="local:ProductListViewModel" x:Key="ProductListVm" -->
+        <!--                     xmlns:sys="clr-namespace:System;assembly=mscorlib"> -->
+        <!--     <ObjectDataProvider.ConstructorParameters> -->
+        <!--         ~1~ <sys:String>Dao2.dll</sys:String> @1@ -->
+        <!--         <StaticResource ResourceKey="LController"/> -->
+        <!--     </ObjectDataProvider.ConstructorParameters> -->
+        <!-- </ObjectDataProvider> -->
+
+        <ObjectDataProvider ObjectType="local:ProducerListViewModel" x:Key="ProducerListVm"
+                            xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <ObjectDataProvider.ConstructorParameters>
+                <sys:String>Dao2.dll</sys:String>
+            </ObjectDataProvider.ConstructorParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider ObjectType="local:ProductListViewModel" x:Key="ProductListVm"
+                            xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <ObjectDataProvider.ConstructorParameters>
+                <sys:String>Dao2.dll</sys:String>
+            </ObjectDataProvider.ConstructorParameters>
+        </ObjectDataProvider>
+
+    </Window.Resources>
+
+
     <WrapPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TabControl HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Stretch" Width="772">
+        <TabControl HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Stretch" Width="Auto">
             <TabItem Header="Producer">
                 <DockPanel Background="#FFE5E5E5">
-                    <ListBox Name="ProducerListBox" Height="Auto" Margin="10,10,0,0" DockPanel.Dock="Left" Width="212"
-                             ItemsSource="{Binding ElementName=Window1, Path=ProducerList}"
-                             />
-                    <Grid DockPanel.Dock="Left">
+                    <ListBox Name="ProducerListBox" Height="351" Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="200"
+                    ItemsSource="{Binding Source={StaticResource ProducerListVm}, Path=ProducerList}"  SelectedItem="{Binding Source={StaticResource ProducerListVm}, Path=SelectedItem}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Id}" MinWidth="30" />
+                                    <Label Content="{Binding Name}" MinWidth="70" />
+                                    <Label Content="{Binding CountryOrigin}" MinWidth="70" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!-- -->
+                    <!-- -->
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <Button Command="{Binding Source={StaticResource ProducerListVm}, Path=CreateProducerCommand}">
+                            Create Producer
+                        </Button>
+                        <Button Command="{Binding Source={StaticResource ProducerListVm}, Path=SaveProducerCommand}">
+                            Save Producer
+                        </Button>
+                        <Button Command="{Binding Source={StaticResource ProducerListVm}, Path=RemoveProducerCommand}">
+                            Remove Producer
+                        </Button>
+                    </StackPanel>
+                    <!-- -->
+                    <!-- -->
+                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProducerListVm}, Path=EditProducer}">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition MinWidth="100" />
                         </Grid.ColumnDefinitions>
                         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProducerListBox, Path=SelectedItem.Id}" Grid.Row="0" Grid.Column="1"/>
-                        <Label Content="Name:" Grid.Row="1" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProducerListBox, Path=SelectedItem.Name}" Grid.Row="1" Grid.Column="1"/>
-                        <Label Content="Country:" Grid.Row="2" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProducerListBox, Path=SelectedItem.CountryOrigin}" Grid.Row="2" Grid.Column="1" />
-                    </Grid>
+                        <TextBox Grid.Row="0" Grid.Column="1" >
+                            <TextBox.Text>
+                                <Binding Path="Id">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
 
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Integer" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Name:" Grid.Row="1" Grid.Column="0"/>
+                        <TextBox Grid.Row="1" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="Name">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="String" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Country Origin:" Grid.Row="2" Grid.Column="0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="CountryOrigin">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="String" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Product">
                 <DockPanel Background="#FFE5E5E5">
-                    <ListBox Name="ProductListBox" Height="351" Margin="10,10,0,0" DockPanel.Dock="Left" Width="212"
-                             ItemsSource="{Binding ElementName=Window1, Path=ProductList}"
-                             />
-                    <Grid DockPanel.Dock="Left">
+                    <ListBox Name="ProductListBox" Height="351" Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="100"
+                    ItemsSource="{Binding Source={StaticResource ProductListVm}, Path=ProductList}"  SelectedItem="{Binding Source={StaticResource ProductListVm}, Path=SelectedItem}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Id}" MinWidth="30" />
+                                    <Label Content="{Binding Name}" MinWidth="70" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!-- -->
+                    <!-- -->
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                        <Button Command="{Binding Source={StaticResource ProductListVm}, Path=CreateProductCommand}">
+                            Create Product
+                        </Button>
+                        <Button Command="{Binding Source={StaticResource ProductListVm}, Path=SaveProductCommand}">
+                            Save Product
+                        </Button>
+                        <Button Command="{Binding Source={StaticResource ProductListVm}, Path=RemoveProductCommand}">
+                            Remove Product
+                        </Button>
+                    </StackPanel>
+                    <!-- -->
+                    <!-- -->
+                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProductListVm}, Path=EditProduct}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -49,26 +190,1116 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition MinWidth="100" />
                         </Grid.ColumnDefinitions>
                         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.Id}" Grid.Row="0" Grid.Column="1"/>
-                        <Label Content="Name:" Grid.Row="1" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.Name}" Grid.Row="1" Grid.Column="1"/>
-                        <Label Content="Propulsion:" Grid.Row="2" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.Propulsion}" Grid.Row="2" Grid.Column="1" />
-                        <Label Content="Material:" Grid.Row="3" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.Material}" Grid.Row="3" Grid.Column="1"/>
-                        <Label Content="Velocity:" Grid.Row="4" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.Velocity}" Grid.Row="4" Grid.Column="1"/>
-                        <Label Content="Producer Id:" Grid.Row="5" Grid.Column="0"/>
-                        <Label Content="{Binding ElementName=ProductListBox, Path=SelectedItem.ProducerId}" Grid.Row="5" Grid.Column="1" />
-                    </Grid>
+                        <TextBox Grid.Row="0" Grid.Column="1" >
+                            <TextBox.Text>
+                                <Binding Path="Id">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
 
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Integer" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Name:" Grid.Row="1" Grid.Column="0"/>
+                        <TextBox Grid.Row="1" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="Name">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="String" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Propulsion:" Grid.Row="2" Grid.Column="0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="Propulsion">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Propulsion" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Material:" Grid.Row="3" Grid.Column="0"/>
+                        <TextBox Grid.Row="3" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="Material">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Material" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Velocity:" Grid.Row="4" Grid.Column="0"/>
+                        <TextBox Grid.Row="4" Grid.Column="1">
+                            <TextBox.Text>
+                                <Binding Path="Velocity">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Integer" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Producer Id:" Grid.Row="5" Grid.Column="0"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" >
+                            <TextBox.Text>
+                                <Binding Path="ProducerId">
+                                    <Binding.ValidatesOnNotifyDataErrors>True</Binding.ValidatesOnNotifyDataErrors>
+                                    <Binding.NotifyOnSourceUpdated>True</Binding.NotifyOnSourceUpdated>
+
+                                    <Binding.ValidationRules>
+                                        <local:CustomValidationRules ValidationType="Integer" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </Grid>
+                    <!-- -->
                 </DockPanel>
+
             </TabItem>
         </TabControl>
 
     </WrapPanel>
 </Window>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
