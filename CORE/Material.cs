@@ -2,7 +2,7 @@
 {
     public enum Material
     {
-        Platic,
+        Plastic,
         Metal,
         PlasticMetal,
         MetalWood

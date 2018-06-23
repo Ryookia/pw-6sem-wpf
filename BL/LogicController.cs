@@ -77,5 +77,35 @@ namespace Durczak.AplikacjaWielowarstowa.BL
         {
             throw new NotImplementedException();
         }
+
+        public void InsertOrUpdate(IProduct product)
+        {
+            _database.InsertOrUpdate(product);
+        }
+
+        public void InsertOrUpdate(IProducer producer)
+        {
+            _database.InsertOrUpdate(producer);
+        }
+
+        public void Remove(IProduct product)
+        {
+            _database.Remove(product);
+        }
+
+        public void Remove(IProducer producer)
+        {
+            _database.Remove(producer);
+        }
+
+        public void RemoveProducerById(int id)
+        {
+            _database.RemoveProducerById(id);
+        }
+
+        public void RemoveProductById(int id)
+        {
+            _database.RemoveProductById(id);
+        }
     }
 }

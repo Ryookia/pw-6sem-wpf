@@ -43,32 +43,48 @@ namespace Durczak.AplikacjaWielowarstowa.Dao
 
         public void InsertOrUpdate(IProduct product)
         {
-            throw new NotImplementedException();
+            Remove(product);
+            _productList.Add(product);
         }
 
         public void InsertOrUpdate(IProducer producer)
         {
-            throw new NotImplementedException();
+            Remove(producer);
+            _producerList.Add(producer);
         }
 
         public void Remove(IProduct product)
         {
-            throw new NotImplementedException();
+            _productList.Remove(product);
         }
 
         public void Remove(IProducer producer)
         {
-            throw new NotImplementedException();
+            _producerList.Remove(producer);
         }
 
         public void RemoveProducerById(int id)
         {
-            throw new NotImplementedException();
+            foreach (var producer in _producerList)
+            {
+                if (producer.Id == id)
+                {
+                    _producerList.Remove(producer);
+                    break;
+                }
+            }
         }
 
         public void RemoveProductById(int id)
         {
-            throw new NotImplementedException();
+            foreach (var product in _productList)
+            {
+                if (product.Id == id)
+                {
+                    _productList.Remove(product);
+                    break;
+                }
+            }
         }
 
         private void InjectMockData()

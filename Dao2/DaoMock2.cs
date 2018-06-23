@@ -42,33 +42,50 @@ namespace Durczak.AplikacjaWielowarstowa.Dao2
 
         public void InsertOrUpdate(IProduct product)
         {
-            throw new NotImplementedException();
+            RemoveProductById(product.Id);
+            _productList.Add(product);
         }
 
         public void InsertOrUpdate(IProducer producer)
         {
-            throw new NotImplementedException();
+            RemoveProducerById(producer.Id);
+            _producerList.Add(producer);
         }
 
         public void Remove(IProduct product)
         {
-            throw new NotImplementedException();
+            _productList.Remove(product);
         }
 
         public void Remove(IProducer producer)
         {
-            throw new NotImplementedException();
+            _producerList.Remove(producer);
         }
 
         public void RemoveProducerById(int id)
         {
-            throw new NotImplementedException();
+            foreach (var producer in _producerList)
+            {
+                if (producer.Id == id)
+                {
+                    _producerList.Remove(producer);
+                    break;
+                }
+            }
         }
 
         public void RemoveProductById(int id)
         {
-            throw new NotImplementedException();
+            foreach (var product in _productList)
+            {
+                if (product.Id == id)
+                {
+                    _productList.Remove(product);
+                    break;
+                }
+            }
         }
+
 
         private void InjectMockData()
         {
@@ -85,7 +102,7 @@ namespace Durczak.AplikacjaWielowarstowa.Dao2
             product = productBuilder
                 .SetName("AUG")
                 .SetId(2)
-                .SetMaterial(Material.Platic)
+                .SetMaterial(Material.Plastic)
                 .SetPropulsion(Propulsion.Electrical)
                 .SetProducerId(1)
                 .SetVelocity(340)
