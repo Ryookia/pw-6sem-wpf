@@ -9,7 +9,7 @@ using Durczak.AplikacjaWielowarstowa.Core;
 
 namespace ThreeWpf
 {
-    class CustomValidationRules : ValidationRule
+    public class CustomValidationRules : ValidationRule
     {
 
         public ValidationType ValidationType { get; set; }

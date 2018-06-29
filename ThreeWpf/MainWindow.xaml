@@ -39,38 +39,22 @@
             </Style.Triggers>
         </Style>
 
-
-
-        <!-- <ObjectDataProvider ObjectType="local:ProductListViewModel" x:Key="ProductListVm" -->
-        <!--                     xmlns:sys="clr-namespace:System;assembly=mscorlib"> -->
-        <!--     <ObjectDataProvider.ConstructorParameters> -->
-        <!--         ~1~ <sys:String>Dao2.dll</sys:String> @1@ -->
-        <!--         <StaticResource ResourceKey="LController"/> -->
-        <!--     </ObjectDataProvider.ConstructorParameters> -->
-        <!-- </ObjectDataProvider> -->
-
         <ObjectDataProvider ObjectType="local:ProducerListViewModel" x:Key="ProducerListVm"
                             xmlns:sys="clr-namespace:System;assembly=mscorlib">
-            <ObjectDataProvider.ConstructorParameters>
-                <sys:String>Dao2.dll</sys:String>
-            </ObjectDataProvider.ConstructorParameters>
         </ObjectDataProvider>
 
         <ObjectDataProvider ObjectType="local:ProductListViewModel" x:Key="ProductListVm"
                             xmlns:sys="clr-namespace:System;assembly=mscorlib">
-            <ObjectDataProvider.ConstructorParameters>
-                <sys:String>Dao2.dll</sys:String>
-            </ObjectDataProvider.ConstructorParameters>
         </ObjectDataProvider>
 
     </Window.Resources>
 
-
-    <WrapPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <TabControl HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Stretch" Width="Auto">
+    <Grid>
+    <!--<WrapPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">-->
+        <TabControl Margin="10,10,0,0">
             <TabItem Header="Producer">
                 <DockPanel Background="#FFE5E5E5">
-                    <ListBox Name="ProducerListBox" Height="351" Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="200"
+                    <ListBox Name="ProducerListBox"  Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="200"
                     ItemsSource="{Binding Source={StaticResource ProducerListVm}, Path=ProducerList}"  SelectedItem="{Binding Source={StaticResource ProducerListVm}, Path=SelectedItem}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -97,7 +81,7 @@
                     </StackPanel>
                     <!-- -->
                     <!-- -->
-                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProducerListVm}, Path=EditProducer}">
+                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProducerListVm}, Path=EditProducer}" Margin="10 10 0 0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -107,7 +91,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition MinWidth="100" />
                         </Grid.ColumnDefinitions>
                         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
@@ -154,7 +138,7 @@
             </TabItem>
             <TabItem Header="Product">
                 <DockPanel Background="#FFE5E5E5">
-                    <ListBox Name="ProductListBox" Height="351" Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="100"
+                    <ListBox Name="ProductListBox"  Margin="10,10,0,0" DockPanel.Dock="Left" MinWidth="100"
                     ItemsSource="{Binding Source={StaticResource ProductListVm}, Path=ProductList}"  SelectedItem="{Binding Source={StaticResource ProductListVm}, Path=SelectedItem}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -180,7 +164,7 @@
                     </StackPanel>
                     <!-- -->
                     <!-- -->
-                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProductListVm}, Path=EditProduct}">
+                    <Grid DockPanel.Dock="Left" DataContext="{Binding Source={StaticResource ProductListVm}, Path=EditProduct}" Margin="10 10 0 0 ">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -190,7 +174,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="100" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition MinWidth="100" />
                         </Grid.ColumnDefinitions>
                         <Label Content="Id:" Grid.Row="0" Grid.Column="0"/>
@@ -278,7 +262,8 @@
             </TabItem>
         </TabControl>
 
-    </WrapPanel>
+    <!--</WrapPanel>-->
+    </Grid>
 </Window>
 
 

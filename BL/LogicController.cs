@@ -14,8 +14,14 @@ namespace Durczak.AplikacjaWielowarstowa.BL
     {
 
         private readonly IDao _database;
+        public static LogicController Instance;
 
-        public LogicController(string databaseName)
+        public static void Init(string databaseName)
+        {
+            Instance = new LogicController(databaseName);
+        }
+
+        private LogicController(string databaseName)
         {
             var dllPath = Directory.GetCurrentDirectory() + @"\" + databaseName;
             Assembly assembly = null;

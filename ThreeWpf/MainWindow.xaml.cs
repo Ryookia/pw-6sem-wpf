@@ -35,7 +35,8 @@ namespace ThreeWpf
 
         public MainWindow()
         {
-            _logicController = new LogicController(Properties.Settings.Default.database_name);
+            LogicController.Init(Properties.Settings.Default.database_name);
+            _logicController = LogicController.Instance;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ThreeWpf
 
         public RelayCommand CreateProducerCommand
         {
-            get => _createProducerCommand;
+            get { return _createProducerCommand; }
         }
 
 
@@ -28,14 +28,14 @@ namespace ThreeWpf
 
         public RelayCommand SaveProducerCommand
         {
-            get => _saveProducerCommand;
+            get { return _saveProducerCommand; }
         }
 
         private RelayCommand _removeProducerCommand;
 
         public RelayCommand RemoveProducerCommand
         {
-            get => _removeProducerCommand;
+            get { return _removeProducerCommand; }
         }
 
         public ObservableCollection<ProducerViewModel> ProducerList
@@ -65,9 +65,9 @@ namespace ThreeWpf
             }
         }
 
-        public ProducerListViewModel(String databaseName)
+        public ProducerListViewModel()
         {
-            this.controller = new LogicController(databaseName);
+            this.controller = LogicController.Instance;
 
             _producerList = new ObservableCollection<ProducerViewModel>();
             _view = (ListCollectionView)CollectionViewSource.GetDefaultView(_producerList);
@@ -93,7 +93,7 @@ namespace ThreeWpf
 
         public ProducerViewModel EditProducer
         {
-            get => _editProducer;
+            get { return _editProducer; }
             set
             {
                 _editProducer = value;
@@ -105,6 +105,7 @@ namespace ThreeWpf
         {
             EditProducer = new ProducerViewModel(new Producer());
             EditProducer.Name = "";
+            EditProducer.CountryOrigin = "";
         }
 
         private bool CanCreateProducer()
@@ -161,7 +162,7 @@ namespace ThreeWpf
 
         private void DeleteProducer()
         {
-            controller.RemoveProductById(EditProducer.GetProducer().Id);
+            controller.RemoveProducerById(EditProducer.GetProducer().Id);
             InitViewModels();
             EditProducer = null;
         }

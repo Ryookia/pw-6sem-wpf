@@ -10,13 +10,13 @@ namespace Durczak.AplikacjaWielowarstowa.Interfaces
     public interface IDao
     {
         List<IProduct> GetProductList();
-        IProducer GetProductById();
+        IProduct GetProductById(int id);
         void RemoveProductById(int id);
         void InsertOrUpdate(IProduct product);
         void Remove(IProduct product);
 
         List<IProducer> GetProducerList();
-        IProducer GetProducerById();
+        IProducer GetProducerById(int id);
         void RemoveProducerById(int id);
         void InsertOrUpdate(IProducer producer);
         void Remove(IProducer producer);

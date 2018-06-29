@@ -23,7 +23,7 @@ namespace ThreeWpf
 
         public RelayCommand CreateProductCommand
         {
-            get => _createProductCommand;
+             get { return _createProductCommand; }
         }
 
 
@@ -31,14 +31,14 @@ namespace ThreeWpf
 
         public RelayCommand SaveProductCommand
         {
-            get => _saveProductCommand;
+            get { return _saveProductCommand; }
         }
 
         private RelayCommand _removeProductCommand;
 
         public RelayCommand RemoveProductCommand
         {
-            get => _removeProductCommand;
+            get { return _removeProductCommand; }
         }
 
         public ObservableCollection<ProductViewModel> ProductList
@@ -68,9 +68,9 @@ namespace ThreeWpf
             }
         }
 
-        public ProductListViewModel(String databaseName)
+        public ProductListViewModel()
         {
-            this.controller = new LogicController(databaseName);
+            this.controller = LogicController.Instance;
 
             _productList = new ObservableCollection<ProductViewModel>();
             _view = (ListCollectionView)CollectionViewSource.GetDefaultView(_productList);
@@ -96,7 +96,7 @@ namespace ThreeWpf
 
         public ProductViewModel EditProduct
         {
-            get => _editProduct;
+            get { return _editProduct; }
             set
             {
                 _editProduct = value;
@@ -159,7 +159,7 @@ namespace ThreeWpf
             controller.InsertOrUpdate(EditProduct.GetProduct());
             InitViewModels();
             EditProduct = null;
-        
+
         }
 
         private void DeleteProduct()
@@ -168,6 +168,6 @@ namespace ThreeWpf
             InitViewModels();
             EditProduct = null;
         }
-        
+
     }
 }

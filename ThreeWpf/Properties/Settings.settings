@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="database_name" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Dao2.dll</Value>
+      <Value Profile="(Default)">DaoEntitySql.dll</Value>
     </Setting>
   </Settings>
 </SettingsFile>

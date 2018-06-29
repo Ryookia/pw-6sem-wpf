@@ -79,7 +79,7 @@ namespace ThreeWpf
                 AddError(nameof(Name), "Name should contain at least 2 characters");
             }
 
-            if (CountryOrigin.Length < 2)
+            if (CountryOrigin == null || CountryOrigin.Length < 2)
             {
                 AddError(nameof(CountryOrigin), "Country should contain at least 2 characters");
             }

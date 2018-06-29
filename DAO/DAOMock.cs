@@ -21,7 +21,7 @@ namespace Durczak.AplikacjaWielowarstowa.Dao
             InjectMockData();
         }
 
-        public IProducer GetProducerById()
+        public IProducer GetProducerById(int id)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace Durczak.AplikacjaWielowarstowa.Dao
             return _producerList;
         }
 
-        public IProducer GetProductById()
+        public IProduct GetProductById(int id)
         {
             throw new NotImplementedException();
         }

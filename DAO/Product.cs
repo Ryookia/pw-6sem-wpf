@@ -17,7 +17,7 @@ namespace Durczak.AplikacjaWielowarstowa.Dao
 
         public override string ToString()
         {
-            return "Producer{" +
+            return "Product{" +
                    "id= " + Id +
                    ", name= " + Name +
                    ", propulsion= " + Propulsion +
